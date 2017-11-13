@@ -1,0 +1,140 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Disen's Home Assistant
+  # Location required to calculate the time the sun rises and sets
+  latitude: 37.356960
+  longitude: -121.964019
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 28
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Los_Angeles
+
+  # Customization file
+  customize:
+    sensor.pws_alerts:
+      friendly_name: Alerts
+    sun.sun:
+      friendly_name: Suryodaya & Asthamaya
+
+# Show links to resources in log and frontend
+introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Uncomment this to add a password (recommended!)
+  api_password: PASSWORD
+  server_port: 8124
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: http://2144royaldrive.duckdns.org:8124
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+# logbook:
+
+# Track the sun
+sun:
+
+# Text to speech
+tts:
+  - platform: google
+
+hello:
+  text: 'Hello, Royal Folks! Iam Home Assistant Robo'
+
+
+# Example configuration.yaml entry
+device_tracker:
+  - platform: ping
+    interval_seconds: 3
+    hide_if_away: yes
+    track: true
+    hosts:
+      DisenMacbook: 192.168.0.14
+      NaveenLaptop: 192.168.0.10
+      AjoMacbook: 192.168.0.15
+
+# Example configuration.yaml entry
+google:
+  client_id: 647850522339-voct238itrv30jh6uhplanr87jf2t8lk.apps.googleusercontent.com
+  client_secret: KXJ0zZk5vsatfVzuEBLkuboK
+
+sensor:
+  - platform: wunderground
+    api_key: 993ff7ac0c686f62
+    monitored_conditions:
+      - temp_high_record_c
+      - temp_c
+      - precip_1d
+      - wind_kph
+      - alerts
+
+group:
+  weather_overview:
+    name: Weather overview
+    entities:
+      - sensor.pws_weather_1d_metric
+      - sensor.pws_temp_high_record_c
+      - sensor.pws_temp_high_1d_c
+      - sensor.pws_temp_c
+      - sensor.pws_temp_low_1d_c
+      - sensor.pws_temp_low_record_c
+      - sensor.pws_precip_1d
+      - sensor.pws_precip_1d_mm
+      - sensor.pws_wind_kph
+      - sensor.pws_wind_1d_kph
+      - sensor.pws_alerts
+
+
+
+# Define input_number
+input_number:
+  bedroom_brightness:
+    name: Hall Brightness
+    initial: 254
+    min: 0
+    max: 254
+    step: 1
+
+# Automation.
+automation:
+  - alias: 2144 Royal Apt - Adjust Brightness
+    trigger:
+      platform: state
+      entity_id: input_number.bedroom_brightness
+    action:
+      - service: light.turn_on
+# Note the use of 'data_template:' below rather than the normal 'data:' if you weren't using an input variable
+        data_template:
+          entity_id: light.bedroom
+          brightness: '{{ trigger.to_state.state | int }}'
+
+
+# Example configuration.yaml entry
+switch:
+  - platform: tplink
+    host: 192.168.0.23
+                                                          
