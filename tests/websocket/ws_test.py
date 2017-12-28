@@ -9,7 +9,7 @@ import json
 
 @asyncio.coroutine
 def echo():
-    websocket = yield from asyncws.connect('ws://localhost:8123/api/websocket')
+    websocket = yield from asyncws.connect('ws://192.168.0.13:8123/api/websocket')
 
     yield from websocket.send(json.dumps(
         {'id': 1, 'type': 'subscribe_events', 'event_type': 'state_changed'}))
