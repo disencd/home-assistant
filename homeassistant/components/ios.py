@@ -290,7 +290,7 @@ class iOSIdentifyDeviceView(HomeAssistantView):
         try:
             data = yield from request.json()
         except ValueError:
-            return self.json_message("Invalid JSON", HTTP_BAD_REQUEST)
+            return self.json_message("Invalid wJSON", HTTP_BAD_REQUEST)
 
         # Commented for now while iOS app is getting frequent updates
         # try:
